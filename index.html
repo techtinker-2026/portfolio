@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechTinker — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: rgba(255,255,255,0.08);
+    --accent: #00f5a0;
+    --accent2: #00c3ff;
+    --accent3: #ff6b6b;
+    --text: #f0f0f5;
+    --muted: #8888aa;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,160,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,160,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow orbs */
+  .orb1, .orb2 {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb1 {
+    width: 500px; height: 500px;
+    background: rgba(0,245,160,0.06);
+    top: -150px; right: -100px;
+  }
+  .orb2 {
+    width: 400px; height: 400px;
+    background: rgba(0,195,255,0.05);
+    bottom: 200px; left: -150px;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ===== HERO ===== */
+  #hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 4rem;
+    padding: 8rem 3rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-text { animation: fadeUp 0.8s ease both; }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 2px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+  }
+
+  h1 .name-accent {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin: 1.5rem 0 2.5rem;
+    line-height: 1.8;
+    max-width: 480px;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 100px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .tag-green { border-color: var(--accent); color: var(--accent); background: rgba(0,245,160,0.06); }
+  .tag-blue { border-color: var(--accent2); color: var(--accent2); background: rgba(0,195,255,0.06); }
+  .tag-red { border-color: var(--accent3); color: var(--accent3); background: rgba(255,107,107,0.06); }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0f;
+    border: none;
+    font-weight: 700;
+  }
+
+  .btn-primary:hover {
+    background: #00e090;
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    border-color: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Hero photo */
+  .hero-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .photo-frame {
+    position: relative;
+    width: 320px;
+    height: 380px;
+  }
+
+  .photo-border {
+    position: absolute;
+    inset: -3px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+    z-index: -1;
+  }
+
+  .photo-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    background: var(--card);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    border: 3px solid var(--bg);
+  }
+
+  .photo-placeholder {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0,245,160,0.2), rgba(0,195,255,0.2));
+    border: 2px dashed rgba(0,245,160,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.4rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .photo-placeholder:hover {
+    background: linear-gradient(135deg, rgba(0,245,160,0.3), rgba(0,195,255,0.3));
+  }
+
+  .photo-placeholder svg {
+    width: 32px; height: 32px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .photo-placeholder span {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .photo-stats {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 0.68rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+  }
+
+  /* floating badge */
+  .badge-float {
+    position: absolute;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.85rem;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+  }
+
+  .badge-float .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  .badge-1 { top: -16px; right: 20px; }
+  .badge-2 { bottom: -16px; left: 10px; }
+
+  /* ===== SECTIONS ===== */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 3rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 3rem;
+  }
+
+  /* ===== SKILLS ===== */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .skill-card:hover::before { opacity: 1; }
+  .skill-card,
+.project-card {
+    transition: all 0.35s ease;
+}
+
+.skill-card:hover,
+.project-card:hover {
+    transform: translateY(-10px) !important;
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px rgba(0,245,160,0.15);
+}
+
+  .skill-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .skill-name {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .skill-desc {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ===== PROJECTS ===== */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px) !important;
+    border-color: rgba(0,245,160,0.3);
+  }
+
+  .project-thumb {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    position: relative;
+  }
+
+  .thumb-arduino { background: linear-gradient(135deg, rgba(0,245,160,0.12), rgba(0,195,255,0.08)); }
+  .thumb-robot { background: linear-gradient(135deg, rgba(0,195,255,0.12), rgba(0,245,160,0.08)); }
+  .thumb-web { background: linear-gradient(135deg, rgba(255,107,107,0.12), rgba(0,195,255,0.08)); }
+
+  .project-body { padding: 1.25rem 1.5rem 1.5rem; }
+
+  .project-cat {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .project-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ===== YOUTUBE ===== */
+  .yt-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .yt-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .yt-icon {
+    width: 52px; height: 52px;
+    background: #ff0000;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .yt-icon svg {
+    width: 28px; height: 28px;
+    fill: white;
+  }
+
+  .yt-channel {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .yt-handle {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .yt-desc {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .yt-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .yt-topic {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    background: rgba(255,0,0,0.08);
+    border: 1px solid rgba(255,0,0,0.2);
+    color: #ff6b6b;
+    letter-spacing: 0.08em;
+  }
+
+  .yt-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .yt-stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .yt-stat-num {
+    font-family: var(--mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+
+  .yt-stat-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: 0.25rem;
+  }
+
+  /* ===== CONTACT ===== */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .contact-text {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 2rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .contact-link-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .form-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  input, textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  input:focus, textarea:focus {
+    border-color: var(--accent);
+  }
+
+  textarea { resize: vertical; min-height: 100px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  footer span { color: var(--accent); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Divider */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 0 3rem;
+    max-width: calc(1200px - 6rem);
+  }
+
+  /* Upload photo functionality */
+  #photo-upload-input { display: none; }
+
+  #user-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 50%;
+    border: 4px solid var(--accent);
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+    .hero-photo { order: -1; }
+    .photo-frame { width: 240px; height: 280px; }
+    section { padding: 3rem 1.5rem; }
+    .yt-card { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    .badge-2 { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb1"></div>
+<div class="orb2"></div>
+
+<nav>
+  <a href="#" class="logo">TechTinker_</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#youtube">YouTube</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="https://youtube.com/@TechTinker-2026" target="_blank" class="btn btn-primary" style="padding: 0.55rem 1.2rem; font-size: 0.7rem;">▶ Watch Channel</a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<div id="hero">
+  <div class="hero-text">
+    
+    <h1>Hi, I'm <span class="name-accent" style="font-family:Outfit;">Aryajith</span></h1>
+    <p><div class="hero-eyebrow">12th Standard Student</div></p>
+    
+    <p class="hero-subtitle">
+      Building the future one circuit at a time — web designer, Arduino robotics projects, and tech content creator from Kerala, India.
+    </p>
+    <div class="hero-tags">
+      <span class="tag tag-green">Web Designer</span>
+      <span class="tag tag-blue">Arduino & Robotics</span>
+      <span class="tag tag-red">YouTube Creator</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects →</a>
+      <a href="https://youtube.com/@TechTinker-2026" target="_blank" class="btn btn-outline">▶ TechTinker</a>
+    </div>
+  </div>
+
+  <div class="hero-photo">
+    <div class="photo-frame">
+      <div class="photo-border"></div>
+      <div class="photo-inner" id="photo-inner">
+        <input type="file" id="photo-upload-input" accept="image/*" onchange="handlePhotoUpload(event)">
+        <img id="user-photo" alt="Aryajith" src="profile.jpg" style="display:block;">
+        <div class="photo-placeholder" id="photo-placeholder" onclick="document.getElementById('photo-upload-input').click()" style="display:none;">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>ADD PHOTO</span>
+        </div>
+        <div class="photo-stats" id="photo-stats" style="display:none;">
+          </div>
+        </div>
+      </div>
+      <div class="badge-float badge-1">
+        <div class="dot"></div>
+        Available for projects
+      </div>
+      <div class="badge-float badge-2">
+        ⚡ Web Desinging
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills">
+  <div class="section-label">What I Do</div>
+  <h2 class="section-title">Skills & Expertise</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">🌐</div>
+      <div class="skill-name">Web Designing</div>
+      <div class="skill-desc">Crafting clean, responsive websites with HTML, CSS, and JavaScript. Focused on user experience and modern aesthetics.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🦾</div>
+      <div class="skill-name">Arduino & Robotics</div>
+      <div class="skill-desc">Programming microcontrollers, building robotic systems, sensors, and automation with Arduino platform.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🎥</div>
+      <div class="skill-name">Content Creation</div>
+      <div class="skill-desc">Producing tech education videos for YouTube — explaining complex topics in simple, engaging ways.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🤖</div>
+      <div class="skill-name">AI</div>
+      <div class="skill-desc">I use AI to learn, code, solve problems, and create innovative projects in Arduino, IoT, and web development.</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">💡</div>
+      <div class="skill-name">Problem Solving</div>
+      <div class="skill-desc">Breaking down complex tech challenges into creative solutions — from hardware to software.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+  <div class="section-label">My Work</div>
+  <h2 class="section-title" style="font-family: League Spartan;">Projects</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-thumb thumb-arduino">🦾</div>
+      <div class="project-body">
+        <div class="project-cat">Arduino · Robotics</div>
+        <div class="project-title">Obstacle Avoiding Robot</div>
+        <div class="project-desc">Built an autonomous robot using Arduino Uno, ultrasonic sensors, and motor drivers that navigates around obstacles in real time.</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb thumb-robot">🏠</div>
+      <div class="project-body">
+        <div class="project-cat">IoT · Arduino</div>
+        <div class="project-title">Smart Home Automation</div>
+        <div class="project-desc">Designed a home automation system controlling lights and fans via smartphone using Arduino and Bluetooth module.</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb thumb-web">💻</div>
+      <div class="project-body">
+        <div class="project-cat">Web Design</div>
+        <div class="project-title">Portfolio Website</div>
+        <div class="project-desc">This very site — designed and built from scratch using pure HTML, CSS, and JavaScript with a modern dark aesthetic.</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb thumb-arduino">🌡️</div>
+      <div class="project-body">
+        <div class="project-cat">Arduino · Sensors</div>
+        <div class="project-title">Weather Station</div>
+        <div class="project-desc">Arduino-based weather station that monitors temperature, humidity, and air pressure with an LCD display and data logging.</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb thumb-robot">🚗</div>
+      <div class="project-body">
+        <div class="project-cat">Robotics · Arduino</div>
+        <div class="project-title">Line Following Robot</div>
+        <div class="project-desc">Programmed a line follower robot with IR sensors and PID control for smooth, accurate path tracking.</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb thumb-web">🎬</div>
+      <div class="project-body">
+        <div class="project-cat">Web · YouTube</div>
+        <div class="project-title">TechThinker Channel Page</div>
+        <div class="project-desc">Custom landing page for the TechThinker YouTube channel with embedded videos, subscriber count, and topic explorer.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== YOUTUBE ===== -->
+<section id="youtube">
+  <div class="section-label">Content</div>
+  <h2 class="section-title">YouTube Channel</h2>
+  <div class="yt-card">
+    <div>
+      <div class="yt-logo">
+        <div class="yt-icon">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+        <div>
+          <div class="yt-channel">TechTinker</div>
+          <div class="yt-handle">@TechTinker-2026</div>
+        </div>
+      </div>
+      <p class="yt-desc">
+        Exploring technology in a simple and practical way — DIY projects, OS installation tutorials, microcontrollers, programming, electronics, and much more. Whether you're a beginner or already into tech, TechTinker helps you learn, build, and innovate!
+      </p>
+      <div class="yt-topics">
+        <span class="yt-topic">Arduino</span>
+        <span class="yt-topic">DIY Projects</span>
+        <span class="yt-topic">OS Installation</span>
+        <span class="yt-topic">Programming</span>
+        <span class="yt-topic">Electronics</span>
+        <span class="yt-topic">Microcontrollers</span>
+      </div>
+      <a href="https://youtube.com/@TechTinker-2026" target="_blank" class="btn btn-primary" style="gap: 0.5rem;">
+        ▶ Subscribe on YouTube
+      </a>
+    </div>
+    <div class="yt-stats">
+      
+      <div class="yt-stat" style="grid-column: 1 / -1; background: rgba(255,0,0,0.06); border-color: rgba(255,0,0,0.15);">
+        <div style="font-family: var(--mono); font-size: 0.78rem; color: var(--muted); line-height: 1.7; padding: 0.5rem 0;">
+          "Join us and start tinkering your way into the world of technology!"
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="section-title">Let's Connect</h2>
+  <div class="contact-grid">
+    <div>
+      <p class="contact-text">
+        Have a cool project idea? Want to collaborate on something robotics or web-related? Or just want to chat about tech? I'd love to hear from you. Let's build something awesome together!
+      </p>
+      <div class="contact-links">
+        <a href="https://youtube.com/@TechTinker-2026" target="_blank" class="contact-link">
+          <div class="contact-link-icon" style="background: rgba(255,0,0,0.1);">▶</div>
+          youtube.com/@TechTinker-2026
+        </a>
+        <a href="mailto:aryajitharun17@gmail.com" class="contact-link">
+          <div class="contact-link-icon" style="background: rgba(0,245,160,0.1);">✉</div>
+          aryajitharun17@gmail.com
+        </a>
+        <a href="https://github.com/techtinker-2026" target="_blank" class="contact-link">
+          <div class="contact-link-icon" style="background: rgba(255,255,255,0.06);">⌨</div>
+          GitHub Profile
+        </a>
+
+      </div>
+    </div>
+    <div class="form-card">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="form-name" placeholder="e.g. Your name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="form-email" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="form-message" placeholder="Tell me about your project or just say hi..."></textarea>
+      </div>
+      <button class="btn btn-primary" id="send-btn" style="width:100%;justify-content:center;" onclick="sendMessage()">Send Message →</button>
+      <p id="form-status" style="font-family:var(--mono);font-size:0.75rem;text-align:center;margin-top:0.75rem;display:none;"></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 <span>Aryajith</span> — Built with ❤️ and lots of Code</p>
+  <p>Kerala, India 🇮🇳</p>
+</footer>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyC_sQFG2xGND5466QSr6RTIEvMB0XSA7VkyWBlvWJiAMWAWlXDQ_3h623g1Lyym7EdKQ/exec';
+
+  async function sendMessage() {
+    const name    = document.getElementById('form-name').value.trim();
+    const email   = document.getElementById('form-email').value.trim();
+    const message = document.getElementById('form-message').value.trim();
+    const btn     = document.getElementById('send-btn');
+    const status  = document.getElementById('form-status');
+    if (!name || !message) { alert('Please enter your name and message.'); return; }
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    status.style.display = 'none';
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+      status.textContent = '✓ Message sent! I will get back to you soon.';
+      status.style.color = 'var(--accent)';
+      document.getElementById('form-name').value    = '';
+      document.getElementById('form-email').value   = '';
+      document.getElementById('form-message').value = '';
+    } catch(e) {
+      status.textContent = '✗ Something went wrong. Try emailing aryajitharun17@gmail.com';
+      status.style.color = 'var(--accent3)';
+    }
+    status.style.display = 'block';
+    btn.textContent = 'Send Message →';
+    btn.disabled = false;
+  }
+
+  function handlePhotoUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.getElementById('user-photo');
+      const placeholder = document.getElementById('photo-placeholder');
+      const stats = document.getElementById('photo-stats');
+      img.src = e.target.result;
+      img.style.display = 'block';
+      placeholder.style.display = 'none';
+      stats.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.skill-card, .project-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity 0.5s ${i * 0.06}s ease, transform 0.02s ${i * 0.02}s ease`;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
